@@ -3,8 +3,8 @@ import { RouterProvider } from '@tanstack/react-router'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createAppQueryClient } from './app/queryClient'
-import { router } from './app/router'
+import { createAppQueryClient } from '@/app/queryClient'
+import { router } from '@/app/router'
 
 const categoriesResponse = {
   poe1: [

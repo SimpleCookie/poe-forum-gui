@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { getForumCategories } from '../../api/forumApi'
-import { ForumMessage } from '../../components/ForumMessage'
-import { assertNever } from '../../utils/assertNever'
+import { getForumCategories } from '@/features/forum/api/forumApi'
+import { ForumMessage } from '@/features/forum/components/ForumMessage'
+import { assertNever } from '@/features/forum/utils/assertNever'
 import { HomeContent } from './components/HomeContent'
 
 export const HomePage = () => {

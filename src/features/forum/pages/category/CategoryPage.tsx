@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigate, useParams, useSearch } from '@tanstack/react-router'
-import { getForumCategory } from '../../api/forumApi'
-import { ForumMessage } from '../../components/ForumMessage'
-import { assertNever } from '../../utils/assertNever'
+import { getForumCategory } from '@/features/forum/api/forumApi'
+import { ForumMessage } from '@/features/forum/components/ForumMessage'
+import { assertNever } from '@/features/forum/utils/assertNever'
 import { CategoryContent } from './components/CategoryContent'
 
 export const CategoryPage = () => {

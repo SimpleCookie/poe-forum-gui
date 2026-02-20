@@ -1,6 +1,6 @@
-import type { ThreadPost } from '../../../types/forum'
-import { formatPostDate } from '../../../utils/formatPostDate'
-import { officialUrls } from '../../../utils/officialUrls'
+import type { ThreadPost } from '@/features/forum/types/forum'
+import { formatPostDate } from '@/features/forum/utils/formatPostDate'
+import { officialUrls } from '@/features/forum/utils/officialUrls'
 import { PostToolbar } from './PostToolbar'
 
 type ThreadPostRowProps = {

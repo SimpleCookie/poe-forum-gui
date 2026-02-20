@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import type { ForumCategoryGroups } from '../../../types/forum'
+import type { ForumCategoryGroups } from '@/features/forum/types/forum'
 
 type HomeContentProps = {
   responseStatus: number

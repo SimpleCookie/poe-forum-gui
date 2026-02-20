@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { officialUrls } from '../../../utils/officialUrls'
+import { officialUrls } from '@/features/forum/utils/officialUrls'
 import { LinkIcon } from './icons/LinkIcon'
 import { QuoteIcon } from './icons/QuoteIcon'
 import { ViewIcon } from './icons/ViewIcon'

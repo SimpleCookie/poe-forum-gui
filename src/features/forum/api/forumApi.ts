@@ -4,7 +4,7 @@ import type {
   CategoryResponse,
   ForumCategoryGroups,
   ThreadResponse,
-} from '../types/forum'
+} from '@/features/forum/types/forum'
 
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim()
 

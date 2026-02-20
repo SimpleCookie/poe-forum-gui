@@ -1,5 +1,5 @@
-import { ForumPager } from '../../../components/ForumPager'
-import type { CategoryThread } from '../../../types/forum'
+import { ForumPager } from '@/features/forum/components/ForumPager'
+import type { CategoryThread } from '@/features/forum/types/forum'
 import { CategoryThreadRow } from './CategoryThreadRow'
 
 type CategoryContentProps = {

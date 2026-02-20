@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigate, useParams, useSearch } from '@tanstack/react-router'
-import { getForumThread } from '../../api/forumApi'
-import { ForumMessage } from '../../components/ForumMessage'
-import { assertNever } from '../../utils/assertNever'
+import { getForumThread } from '@/features/forum/api/forumApi'
+import { ForumMessage } from '@/features/forum/components/ForumMessage'
+import { assertNever } from '@/features/forum/utils/assertNever'
 import { ThreadContent } from './components/ThreadContent'
 
 export const ThreadPage = () => {

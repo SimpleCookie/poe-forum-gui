@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import type { CategoryThread } from '../../../types/forum'
+import type { CategoryThread } from '@/features/forum/types/forum'
 
 type CategoryThreadRowProps = {
   thread: CategoryThread

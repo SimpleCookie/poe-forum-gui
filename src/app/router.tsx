@@ -1,8 +1,8 @@
 import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router'
-import { AppShell } from './AppShell'
-import { HomePage } from '../features/forum/pages/home/HomePage'
-import { CategoryPage } from '../features/forum/pages/category/CategoryPage'
-import { ThreadPage } from '../features/forum/pages/thread/ThreadPage'
+import { AppShell } from '@/app/AppShell'
+import { HomePage } from '@/features/forum/pages/home/HomePage'
+import { CategoryPage } from '@/features/forum/pages/category/CategoryPage'
+import { ThreadPage } from '@/features/forum/pages/thread/ThreadPage'
 
 const rootRoute = createRootRoute({
   component: AppShell,

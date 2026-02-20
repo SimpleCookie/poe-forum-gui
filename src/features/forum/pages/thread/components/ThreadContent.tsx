@@ -1,5 +1,5 @@
-import { ForumPager } from '../../../components/ForumPager'
-import type { ThreadResponse } from '../../../types/forum'
+import { ForumPager } from '@/features/forum/components/ForumPager'
+import type { ThreadResponse } from '@/features/forum/types/forum'
 import { ThreadPostRow } from './ThreadPostRow'
 
 type ThreadContentProps = {

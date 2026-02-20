@@ -7,6 +7,8 @@ type ThreadContentProps = {
   currentPage: number
   onPreviousPage: () => void
   onNextPage: () => void
+  onFirstPage: () => void
+  onLastPage: () => void
 }
 
 export const ThreadContent = ({
@@ -14,6 +16,8 @@ export const ThreadContent = ({
   currentPage,
   onPreviousPage,
   onNextPage,
+  onFirstPage,
+  onLastPage,
 }: ThreadContentProps) => {
   const posts = threadData.posts
 
@@ -29,8 +33,13 @@ export const ThreadContent = ({
         currentPage={currentPage}
         onPreviousPage={onPreviousPage}
         onNextPage={onNextPage}
-        isPreviousDisabled={currentPage <= 1}
+        isPreviousDisabled={!threadData.pagination.hasPrevious}
         isNextDisabled={!threadData.pagination.hasNext}
+        totalPages={threadData.pagination.totalPages}
+        onFirstPage={onFirstPage}
+        onLastPage={onLastPage}
+        isFirstDisabled={!threadData.pagination.hasPrevious}
+        isLastDisabled={!threadData.pagination.hasNext}
       />
     </>
   )

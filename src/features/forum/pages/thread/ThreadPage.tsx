@@ -80,6 +80,8 @@ export const ThreadPage = () => {
         currentPage={currentPage}
         onPreviousPage={() => goToPage(currentPage - 1)}
         onNextPage={() => goToPage(currentPage + 1)}
+        onFirstPage={() => goToPage(1)}
+        onLastPage={() => goToPage(threadResult.data.pagination.totalPages)}
       />
     )
   }

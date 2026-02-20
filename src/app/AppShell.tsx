@@ -1,7 +1,7 @@
 import { Link, Outlet } from '@tanstack/react-router'
 import './app.css'
 
-export default function AppShell() {
+export const AppShell = () => {
   return (
     <main className="forum-app">
       <header className="forum-header">

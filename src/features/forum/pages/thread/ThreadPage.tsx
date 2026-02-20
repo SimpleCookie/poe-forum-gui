@@ -2,11 +2,11 @@ import type { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { getForumThread } from '../../api/forumApi'
-import ForumMessage from '../../components/ForumMessage'
+import { ForumMessage } from '../../components/ForumMessage'
 import { assertNever } from '../../utils/assertNever'
-import ThreadContent from './components/ThreadContent'
+import { ThreadContent } from './components/ThreadContent'
 
-export default function ThreadPage() {
+export const ThreadPage = () => {
   const { threadId } = useParams({ from: '/thread/$threadId' })
   const search = useSearch({ from: '/thread/$threadId' })
   const categorySlug = search.category

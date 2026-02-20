@@ -6,7 +6,7 @@ type CategoryThreadRowProps = {
   categorySlug: string
 }
 
-export default function CategoryThreadRow({ thread, categorySlug }: CategoryThreadRowProps) {
+export const CategoryThreadRow = ({ thread, categorySlug }: CategoryThreadRowProps) => {
   return (
     <li className="forum-row">
       <div className="forum-row-main">

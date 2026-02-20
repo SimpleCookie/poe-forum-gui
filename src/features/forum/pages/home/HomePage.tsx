@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { getForumCategories } from '../../api/forumApi'
-import ForumMessage from '../../components/ForumMessage'
+import { ForumMessage } from '../../components/ForumMessage'
 import { assertNever } from '../../utils/assertNever'
-import HomeContent from './components/HomeContent'
+import { HomeContent } from './components/HomeContent'
 
-export default function HomePage() {
+export const HomePage = () => {
   const {
     isPending: isHomePending,
     isError: isHomeError,

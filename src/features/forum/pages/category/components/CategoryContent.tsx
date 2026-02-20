@@ -1,6 +1,6 @@
-import ForumPager from '../../../components/ForumPager'
+import { ForumPager } from '../../../components/ForumPager'
 import type { CategoryThread } from '../../../types/forum'
-import CategoryThreadRow from './CategoryThreadRow'
+import { CategoryThreadRow } from './CategoryThreadRow'
 
 type CategoryContentProps = {
   threads: CategoryThread[]
@@ -10,13 +10,13 @@ type CategoryContentProps = {
   onNextPage: () => void
 }
 
-export default function CategoryContent({
+export const CategoryContent = ({
   threads,
   currentPage,
   categorySlug,
   onPreviousPage,
   onNextPage,
-}: CategoryContentProps) {
+}: CategoryContentProps) => {
   return (
     <>
       <ul className="forum-list">

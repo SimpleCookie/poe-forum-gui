@@ -2,11 +2,11 @@ import type { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { getForumCategory } from '../../api/forumApi'
-import ForumMessage from '../../components/ForumMessage'
+import { ForumMessage } from '../../components/ForumMessage'
 import { assertNever } from '../../utils/assertNever'
-import CategoryContent from './components/CategoryContent'
+import { CategoryContent } from './components/CategoryContent'
 
-export default function CategoryPage() {
+export const CategoryPage = () => {
   const { slug } = useParams({ from: '/category/$slug' })
   const search = useSearch({ from: '/category/$slug' })
   const currentPage = search.page

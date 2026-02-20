@@ -1,6 +1,6 @@
-import ForumPager from '../../../components/ForumPager'
+import { ForumPager } from '../../../components/ForumPager'
 import type { ThreadResponse } from '../../../types/forum'
-import ThreadPostRow from './ThreadPostRow'
+import { ThreadPostRow } from './ThreadPostRow'
 
 type ThreadContentProps = {
   threadData: ThreadResponse
@@ -9,12 +9,12 @@ type ThreadContentProps = {
   onNextPage: () => void
 }
 
-export default function ThreadContent({
+export const ThreadContent = ({
   threadData,
   currentPage,
   onPreviousPage,
   onNextPage,
-}: ThreadContentProps) {
+}: ThreadContentProps) => {
   const posts = threadData.posts
 
   return (

@@ -1,13 +1,13 @@
 import type { ThreadPost } from '../../../types/forum'
 import { formatPostDate } from '../../../utils/formatPostDate'
 import { officialUrls } from '../../../utils/officialUrls'
-import PostToolbar from './PostToolbar'
+import { PostToolbar } from './PostToolbar'
 
 type ThreadPostRowProps = {
   post: ThreadPost
 }
 
-export default function ThreadPostRow({ post }: ThreadPostRowProps) {
+export const ThreadPostRow = ({ post }: ThreadPostRowProps) => {
   return (
     <li key={post.postId} className="post-card" id={`post-${post.postId.replace(/^p/, '')}`}>
       <div className="post-card-content">

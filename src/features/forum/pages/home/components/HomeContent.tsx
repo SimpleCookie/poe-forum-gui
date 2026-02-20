@@ -6,7 +6,7 @@ type HomeContentProps = {
   categories: ForumCategoryGroups
 }
 
-export default function HomeContent({ responseStatus, categories }: HomeContentProps) {
+export const HomeContent = ({ responseStatus, categories }: HomeContentProps) => {
   return (
     <section className="forum-board">
       <div className="forum-status">

@@ -1,4 +1,4 @@
-export default function QuoteIcon() {
+export const QuoteIcon = () => {
   return (
     <svg className="post-toolbar-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { officialUrls } from '../../../utils/officialUrls'
-import LinkIcon from './icons/LinkIcon'
-import QuoteIcon from './icons/QuoteIcon'
-import ViewIcon from './icons/ViewIcon'
+import { LinkIcon } from './icons/LinkIcon'
+import { QuoteIcon } from './icons/QuoteIcon'
+import { ViewIcon } from './icons/ViewIcon'
 
 type PostToolbarProps = {
   threadId: string
@@ -13,7 +13,7 @@ type PostToolbarProps = {
 
 const normalizePostId = (postId: string) => postId.replace(/^p/, '')
 
-export default function PostToolbar({ threadId, page, postId, author }: PostToolbarProps) {
+export const PostToolbar = ({ threadId, page, postId, author }: PostToolbarProps) => {
   const [isCopied, setIsCopied] = useState(false)
   const normalizedPostId = normalizePostId(postId)
 

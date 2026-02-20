@@ -6,13 +6,13 @@ type ForumPagerProps = {
   isNextDisabled: boolean
 }
 
-export default function ForumPager({
+export const ForumPager = ({
   currentPage,
   onPreviousPage,
   onNextPage,
   isPreviousDisabled,
   isNextDisabled,
-}: ForumPagerProps) {
+}: ForumPagerProps) => {
   return (
     <div className="forum-pager">
       <button type="button" onClick={onPreviousPage} disabled={isPreviousDisabled}>

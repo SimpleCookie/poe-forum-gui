@@ -1,5 +1,6 @@
 import ForumPager from '../../../components/ForumPager'
 import type { ThreadResponse } from '../../../types/forum'
+import { formatPostDate } from '../../../utils/formatPostDate'
 import PostToolbar from './PostToolbar'
 
 type ThreadContentProps = {
@@ -25,7 +26,7 @@ export default function ThreadContent({
             <div className="post-card-content">
               <div className="post-head">
                 <strong>{post.author}</strong>
-                <span>{new Date(post.createdAt).toLocaleString()}</span>
+                <span>{formatPostDate(post.createdAt)}</span>
               </div>
               <p>{post.contentText}</p>
             </div>

@@ -21,7 +21,6 @@ export default function HomePage() {
 
   if (isHomeError) {
     const message = homeError instanceof Error ? homeError.message : 'Failed to load categories'
-
     return <ForumMessage text={`Error: ${message}`} variant="error" />
   }
 

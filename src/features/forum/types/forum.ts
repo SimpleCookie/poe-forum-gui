@@ -33,3 +33,17 @@ export type ThreadResponse = {
   posts: ThreadPost[]
   nextPageUrl?: string
 }
+
+export type ApiSuccess<T> = {
+  kind: 'success'
+  status: number
+  data: T
+}
+
+export type ApiFailure = {
+  kind: 'failure'
+  status: number
+  error: string
+}
+
+export type ApiResult<T> = ApiSuccess<T> | ApiFailure

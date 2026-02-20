@@ -1,5 +1,10 @@
 import { getGetCategoriesUrl, getGetCategoryUrl, getGetThreadUrl } from '@devgroup.se/poe-forum-api'
-import type { CategoryResponse, ForumCategoryGroups, ThreadResponse } from '../types/forum'
+import type {
+  ApiResult,
+  CategoryResponse,
+  ForumCategoryGroups,
+  ThreadResponse,
+} from '../types/forum'
 
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim()
 
@@ -13,18 +18,31 @@ const resolveApiUrl = (generatedUrl: string) => {
   ).toString()
 }
 
-const fetchJson = async <T>(generatedUrl: string): Promise<{ data: T; status: number }> => {
-  const res = await fetch(resolveApiUrl(generatedUrl), { method: 'GET' })
+const fetchJson = async <T>(generatedUrl: string): Promise<ApiResult<T>> => {
+  try {
+    const res = await fetch(resolveApiUrl(generatedUrl), { method: 'GET' })
+    const body = [204, 205, 304].includes(res.status) ? null : await res.text()
 
-  if (!res.ok) {
-    const message = await res.text()
-    throw new Error(message || `Request failed with status ${res.status}`)
+    if (!res.ok) {
+      return {
+        kind: 'failure',
+        status: res.status,
+        error: body || `Request failed with status ${res.status}`,
+      }
+    }
+
+    return {
+      kind: 'success',
+      status: res.status,
+      data: (body ? JSON.parse(body) : {}) as T,
+    }
+  } catch (error) {
+    return {
+      kind: 'failure',
+      status: 0,
+      error: error instanceof Error ? error.message : 'Network request failed',
+    }
   }
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
-  const data = (body ? JSON.parse(body) : {}) as T
-
-  return { data, status: res.status }
 }
 
 export const getForumCategories = () => fetchJson<ForumCategoryGroups>(getGetCategoriesUrl())

@@ -1,4 +1,6 @@
 import { Link } from '@tanstack/react-router'
+import ForumMessage from '../../../components/ForumMessage'
+import ForumPager from '../../../components/ForumPager'
 import type { CategoryThread } from '../../../types/forum'
 
 type CategoryContentProps = {
@@ -21,11 +23,11 @@ export default function CategoryContent({
   onNextPage,
 }: CategoryContentProps) {
   if (isLoading) {
-    return <p className="forum-message">Loading threads...</p>
+    return <ForumMessage text="Loading threads..." />
   }
 
   if (error) {
-    return <p className="forum-message error">Error: {error}</p>
+    return <ForumMessage text={`Error: ${error}`} variant="error" />
   }
 
   return (
@@ -48,15 +50,13 @@ export default function CategoryContent({
         ))}
       </ul>
 
-      <div className="forum-pager">
-        <button type="button" onClick={onPreviousPage} disabled={currentPage <= 1}>
-          Previous
-        </button>
-        <span>Page {currentPage}</span>
-        <button type="button" onClick={onNextPage} disabled={threads.length === 0}>
-          Next
-        </button>
-      </div>
+      <ForumPager
+        currentPage={currentPage}
+        onPreviousPage={onPreviousPage}
+        onNextPage={onNextPage}
+        isPreviousDisabled={currentPage <= 1}
+        isNextDisabled={threads.length === 0}
+      />
     </>
   )
 }

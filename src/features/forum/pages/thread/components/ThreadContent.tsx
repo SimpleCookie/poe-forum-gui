@@ -1,3 +1,5 @@
+import ForumMessage from '../../../components/ForumMessage'
+import ForumPager from '../../../components/ForumPager'
 import type { ThreadResponse } from '../../../types/forum'
 
 type ThreadContentProps = {
@@ -18,11 +20,11 @@ export default function ThreadContent({
   onNextPage,
 }: ThreadContentProps) {
   if (isLoading) {
-    return <p className="forum-message">Loading posts...</p>
+    return <ForumMessage text="Loading posts..." />
   }
 
   if (error) {
-    return <p className="forum-message error">Error: {error}</p>
+    return <ForumMessage text={`Error: ${error}`} variant="error" />
   }
 
   const posts = threadData?.posts ?? []
@@ -41,15 +43,13 @@ export default function ThreadContent({
         ))}
       </ul>
 
-      <div className="forum-pager">
-        <button type="button" onClick={onPreviousPage} disabled={currentPage <= 1}>
-          Previous
-        </button>
-        <span>Page {currentPage}</span>
-        <button type="button" onClick={onNextPage} disabled={!threadData?.nextPageUrl}>
-          Next
-        </button>
-      </div>
+      <ForumPager
+        currentPage={currentPage}
+        onPreviousPage={onPreviousPage}
+        onNextPage={onNextPage}
+        isPreviousDisabled={currentPage <= 1}
+        isNextDisabled={!threadData?.nextPageUrl}
+      />
     </>
   )
 }

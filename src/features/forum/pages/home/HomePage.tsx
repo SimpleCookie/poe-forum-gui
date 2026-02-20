@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getForumCategories } from '../../api/forumApi'
+import ForumMessage from '../../components/ForumMessage'
 import HomeContent from './components/HomeContent'
 
 export default function HomePage() {
@@ -9,7 +10,7 @@ export default function HomePage() {
   })
 
   if (categoriesQuery.isPending) {
-    return <p className="forum-message">Loading forum categories...</p>
+    return <ForumMessage text="Loading forum categories..." />
   }
 
   if (categoriesQuery.isError) {
@@ -18,7 +19,7 @@ export default function HomePage() {
         ? categoriesQuery.error.message
         : 'Failed to load categories'
 
-    return <p className="forum-message error">Error: {message}</p>
+    return <ForumMessage text={`Error: ${message}`} variant="error" />
   }
 
   return (

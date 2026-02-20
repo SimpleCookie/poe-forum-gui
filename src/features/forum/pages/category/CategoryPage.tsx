@@ -48,7 +48,8 @@ export default function CategoryPage() {
   }
 
   if (isCategoryError) {
-    const message = categoryError instanceof Error ? categoryError.message : 'Failed to load category'
+    const message =
+      categoryError instanceof Error ? categoryError.message : 'Failed to load category'
 
     return renderCategoryWrapper(<ForumMessage text={`Error: ${message}`} variant="error" />)
   }

@@ -68,7 +68,9 @@ export default function ThreadPage() {
   }
 
   if (threadResult.kind === 'failure') {
-    return renderThreadWrapper(<ForumMessage text={`Error: ${threadResult.error}`} variant="error" />)
+    return renderThreadWrapper(
+      <ForumMessage text={`Error: ${threadResult.error}`} variant="error" />
+    )
   }
 
   if (threadResult.kind === 'success') {

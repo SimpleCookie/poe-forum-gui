@@ -1,5 +1,6 @@
 import ForumPager from '../../../components/ForumPager'
 import type { ThreadResponse } from '../../../types/forum'
+import PostToolbar from './PostToolbar'
 
 type ThreadContentProps = {
   threadData: ThreadResponse
@@ -20,12 +21,21 @@ export default function ThreadContent({
     <>
       <ul className="post-list">
         {posts.map((post) => (
-          <li key={post.postId} className="post-card">
-            <div className="post-head">
-              <strong>{post.author}</strong>
-              <span>{new Date(post.createdAt).toLocaleString()}</span>
+          <li key={post.postId} className="post-card" id={`post-${post.postId.replace(/^p/, '')}`}>
+            <div className="post-card-content">
+              <div className="post-head">
+                <strong>{post.author}</strong>
+                <span>{new Date(post.createdAt).toLocaleString()}</span>
+              </div>
+              <p>{post.contentText}</p>
             </div>
-            <p>{post.contentText}</p>
+
+            <PostToolbar
+              threadId={post.threadId}
+              page={post.page}
+              postId={post.postId}
+              author={post.author}
+            />
           </li>
         ))}
       </ul>

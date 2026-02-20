@@ -128,10 +128,19 @@
 }
 
 .post-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
   border: 1px solid #303030;
   border-radius: 8px;
   padding: 0.65rem 0.75rem;
   background: #1f1f1f;
+}
+
+.post-card-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .post-head {
@@ -148,6 +157,53 @@
   white-space: pre-wrap;
 }
 
+.post-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.post-toolbar-item {
+  position: relative;
+}
+
+.post-toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  background: #252525;
+  color: #e8e8e8;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.post-toolbar-button:hover {
+  background: #303030;
+}
+
+.post-toolbar-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.post-toolbar-tooltip {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 0.4rem);
+  transform: translateY(-50%);
+  background: #111;
+  border: 1px solid #3a3a3a;
+  border-radius: 5px;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
 @media (max-width: 700px) {
   .forum-row {
     flex-direction: column;
@@ -162,5 +218,21 @@
   .post-head {
     flex-direction: column;
     gap: 0.2rem;
+  }
+
+  .post-card {
+    flex-direction: column;
+  }
+
+  .post-toolbar {
+    flex-direction: row;
+    align-self: flex-end;
+  }
+
+  .post-toolbar-tooltip {
+    top: auto;
+    right: 50%;
+    bottom: calc(100% + 0.25rem);
+    transform: translateX(50%);
   }
 }

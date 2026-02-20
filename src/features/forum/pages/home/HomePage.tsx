@@ -30,7 +30,9 @@ export default function HomePage() {
   }
 
   if (categoriesResult.kind === 'success') {
-    return <HomeContent responseStatus={categoriesResult.status} categories={categoriesResult.data} />
+    return (
+      <HomeContent responseStatus={categoriesResult.status} categories={categoriesResult.data} />
+    )
   }
 
   return assertNever(categoriesResult)

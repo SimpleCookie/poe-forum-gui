@@ -1,3 +1,5 @@
+import type { Pageable, Post, ThreadResponseV2 } from '@devgroup.se/poe-forum-api'
+
 export type ForumCategory = {
   name: string
   slug: string
@@ -19,20 +21,11 @@ export type CategoryResponse = {
   threads: CategoryThread[]
 }
 
-export type ThreadPost = {
-  threadId: string
-  page: number
-  indexOnPage: number
-  contentText: string
-  author: string
-  createdAt: string
-  postId: string
-}
+export type ThreadPost = Post
 
-export type ThreadResponse = {
-  posts: ThreadPost[]
-  nextPageUrl?: string
-}
+export type ThreadPagination = Pageable
+
+export type ThreadResponse = ThreadResponseV2
 
 export type ApiSuccess<T> = {
   kind: 'success'

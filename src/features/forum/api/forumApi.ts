@@ -1,4 +1,4 @@
-import { getGetCategoriesUrl, getGetCategoryUrl, getGetThreadUrl } from '@devgroup.se/poe-forum-api'
+import { getCategories, getCategory, setBaseUrl, thread } from '@devgroup.se/poe-forum-api'
 import type {
   ApiResult,
   CategoryResponse,
@@ -8,33 +8,38 @@ import type {
 
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim()
 
-const resolveApiUrl = (generatedUrl: string) => {
-  const parsedGeneratedUrl = new URL(generatedUrl)
-  const targetBaseUrl = configuredApiBaseUrl?.length ? configuredApiBaseUrl : window.location.origin
-
-  return new URL(
-    `${parsedGeneratedUrl.pathname}${parsedGeneratedUrl.search}`,
-    targetBaseUrl
-  ).toString()
+if (configuredApiBaseUrl?.length) {
+  setBaseUrl(configuredApiBaseUrl)
 }
 
-const fetchJson = async <T>(generatedUrl: string): Promise<ApiResult<T>> => {
-  try {
-    const res = await fetch(resolveApiUrl(generatedUrl), { method: 'GET' })
-    const body = [204, 205, 304].includes(res.status) ? null : await res.text()
+const getErrorMessage = (status: number, data: unknown) => {
+  if (data && typeof data === 'object' && 'error' in data) {
+    const error = (data as { error?: unknown }).error
 
-    if (!res.ok) {
+    if (typeof error === 'string' && error.length > 0) {
+      return error
+    }
+  }
+
+  return `Request failed with status ${status}`
+}
+
+const fetchJson = async <T>(request: () => Promise<{ status: number; data: unknown }>): Promise<ApiResult<T>> => {
+  try {
+    const response = await request()
+
+    if (response.status < 200 || response.status >= 300) {
       return {
         kind: 'failure',
-        status: res.status,
-        error: body || `Request failed with status ${res.status}`,
+        status: response.status,
+        error: getErrorMessage(response.status, response.data),
       }
     }
 
     return {
       kind: 'success',
-      status: res.status,
-      data: (body ? JSON.parse(body) : {}) as T,
+      status: response.status,
+      data: response.data as T,
     }
   } catch (error) {
     return {
@@ -45,10 +50,10 @@ const fetchJson = async <T>(generatedUrl: string): Promise<ApiResult<T>> => {
   }
 }
 
-export const getForumCategories = () => fetchJson<ForumCategoryGroups>(getGetCategoriesUrl())
+export const getForumCategories = () => fetchJson<ForumCategoryGroups>(() => getCategories())
 
 export const getForumCategory = (slug: string, page: number) =>
-  fetchJson<CategoryResponse>(getGetCategoryUrl(slug, { page: String(page) }))
+  fetchJson<CategoryResponse>(() => getCategory(slug, { page: String(page) }))
 
 export const getForumThread = (threadId: string, page: number) =>
-  fetchJson<ThreadResponse>(getGetThreadUrl(threadId, { page: String(page) }))
+  fetchJson<ThreadResponse>(() => thread.v2.getThread(threadId, String(page)))

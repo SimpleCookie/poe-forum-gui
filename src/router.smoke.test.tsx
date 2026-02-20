@@ -31,10 +31,10 @@ const categoryResponse = {
 }
 
 const threadResponse = {
+  threadId: '3912574',
   posts: [
     {
       threadId: '3912574',
-      page: 1,
       indexOnPage: 1,
       contentText: 'LOGIN',
       contentHtml: 'LOGIN',
@@ -43,6 +43,13 @@ const threadResponse = {
       postId: 'p26573846',
     },
   ],
+  pagination: {
+    page: 1,
+    totalPages: 1,
+    hasNext: false,
+    hasPrevious: false,
+    pageSize: 20,
+  },
 }
 
 describe('forum router smoke test', () => {
@@ -81,7 +88,7 @@ describe('forum router smoke test', () => {
           })
         }
 
-        if (pathname === '/api/thread/3912574') {
+        if (pathname === '/api/v2/thread/3912574') {
           return new Response(JSON.stringify(threadResponse), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
@@ -119,7 +126,12 @@ describe('forum router smoke test', () => {
   it('shows error message when categories request fails', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(async () => new Response('Internal Server Error', { status: 500 }))
+      vi.fn(async () =>
+        new Response(JSON.stringify({ error: 'Internal Server Error' }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        })
+      )
     )
 
     renderApp()
@@ -143,7 +155,10 @@ describe('forum router smoke test', () => {
         }
 
         if (pathname === '/api/category/news') {
-          return new Response('Category fetch failed', { status: 500 })
+          return new Response(JSON.stringify({ error: 'Category fetch failed' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+          })
         }
 
         return new Response('Not found', { status: 404 })

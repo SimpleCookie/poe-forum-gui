@@ -21,7 +21,7 @@ export const ThreadContent = ({
     <>
       <ul className="post-list">
         {posts.map((post) => (
-          <ThreadPostRow key={post.postId} post={post} />
+          <ThreadPostRow key={post.postId} post={post} page={currentPage} />
         ))}
       </ul>
 
@@ -30,7 +30,7 @@ export const ThreadContent = ({
         onPreviousPage={onPreviousPage}
         onNextPage={onNextPage}
         isPreviousDisabled={currentPage <= 1}
-        isNextDisabled={!threadData.nextPageUrl}
+        isNextDisabled={!threadData.pagination.hasNext}
       />
     </>
   )

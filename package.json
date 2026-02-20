@@ -14,7 +14,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@devgroup.se/poe-forum-api": "^1.0.0",
+    "@devgroup.se/poe-forum-api": "^4.1.0",
     "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-router": "^1.161.3",
     "dayjs": "^1.11.19",

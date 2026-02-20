@@ -5,9 +5,10 @@ import { PostToolbar } from './PostToolbar'
 
 type ThreadPostRowProps = {
   post: ThreadPost
+  page: number
 }
 
-export const ThreadPostRow = ({ post }: ThreadPostRowProps) => {
+export const ThreadPostRow = ({ post, page }: ThreadPostRowProps) => {
   return (
     <li key={post.postId} className="post-card" id={`post-${post.postId.replace(/^p/, '')}`}>
       <div className="post-card-content">
@@ -25,7 +26,7 @@ export const ThreadPostRow = ({ post }: ThreadPostRowProps) => {
         <p>{post.contentText}</p>
       </div>
 
-      <PostToolbar threadId={post.threadId} page={post.page} postId={post.postId} author={post.author} />
+      <PostToolbar threadId={post.threadId} page={page} postId={post.postId} author={post.author} />
     </li>
   )
 }

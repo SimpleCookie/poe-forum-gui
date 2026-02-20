@@ -51,9 +51,9 @@ export default function ThreadPage() {
               ? threadQuery.error instanceof Error
                 ? threadQuery.error.message
                 : 'Failed to load thread'
-              : null
+              : undefined
           }
-          threadData={threadQuery.data?.data ?? null}
+          threadData={threadQuery.data?.data}
           currentPage={currentPage}
           onPreviousPage={() => goToPage(currentPage - 1)}
           onNextPage={() => goToPage(currentPage + 1)}

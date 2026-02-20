@@ -37,7 +37,7 @@ export default function CategoryPage() {
               ? categoryQuery.error instanceof Error
                 ? categoryQuery.error.message
                 : 'Failed to load category'
-              : null
+              : undefined
           }
           threads={categoryQuery.data?.data.threads ?? []}
           currentPage={currentPage}

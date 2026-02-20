@@ -4,8 +4,8 @@ import type { ThreadResponse } from '../../../types/forum'
 
 type ThreadContentProps = {
   isLoading: boolean
-  error: string | null
-  threadData: ThreadResponse | null
+  error?: string
+  threadData?: ThreadResponse
   currentPage: number
   onPreviousPage: () => void
   onNextPage: () => void

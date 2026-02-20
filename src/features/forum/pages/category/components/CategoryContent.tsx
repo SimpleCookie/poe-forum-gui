@@ -5,7 +5,7 @@ import type { CategoryThread } from '../../../types/forum'
 
 type CategoryContentProps = {
   isLoading: boolean
-  error: string | null
+  error?: string
   threads: CategoryThread[]
   currentPage: number
   categorySlug: string

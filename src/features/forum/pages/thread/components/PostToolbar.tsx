@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { officialUrls } from '../../../utils/officialUrls'
 import LinkIcon from './icons/LinkIcon'
 import QuoteIcon from './icons/QuoteIcon'
 import ViewIcon from './icons/ViewIcon'
@@ -16,8 +17,8 @@ export default function PostToolbar({ threadId, page, postId, author }: PostTool
   const [isCopied, setIsCopied] = useState(false)
   const normalizedPostId = normalizePostId(postId)
 
-  const quoteUrl = `https://www.pathofexile.com/forum/post-reply/${threadId}/quote/${normalizedPostId}`
-  const viewUrl = `https://www.pathofexile.com/forum/view-thread/${threadId}/page/${page}#p${normalizedPostId}`
+  const quoteUrl = officialUrls.quote(threadId, normalizedPostId)
+  const viewUrl = officialUrls.threadPost(threadId, page, normalizedPostId)
 
   const copyPostLink = async () => {
     const appPostLink = `${window.location.origin}/thread/${threadId}?page=${page}#post-${normalizedPostId}`

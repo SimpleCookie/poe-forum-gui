@@ -1,6 +1,6 @@
-import { Link } from '@tanstack/react-router'
 import ForumPager from '../../../components/ForumPager'
 import type { CategoryThread } from '../../../types/forum'
+import CategoryThreadRow from './CategoryThreadRow'
 
 type CategoryContentProps = {
   threads: CategoryThread[]
@@ -21,19 +21,7 @@ export default function CategoryContent({
     <>
       <ul className="forum-list">
         {threads.map((thread) => (
-          <li className="forum-row" key={thread.threadId}>
-            <div className="forum-row-main">
-              <Link
-                to="/thread/$threadId"
-                params={{ threadId: thread.threadId }}
-                search={{ category: categorySlug, page: 1 }}
-              >
-                {thread.title}
-              </Link>
-              <span className="forum-slug">Thread #{thread.threadId}</span>
-            </div>
-            <span className="forum-endpoint">Replies: {thread.replies}</span>
-          </li>
+          <CategoryThreadRow key={thread.threadId} thread={thread} categorySlug={categorySlug} />
         ))}
       </ul>
 

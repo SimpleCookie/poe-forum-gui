@@ -103,6 +103,8 @@ describe('forum router smoke test', () => {
     await user.click(screen.getByRole('link', { name: 'Announcements' }))
 
     expect(await screen.findByText('Watch GGG Live on February 26 (PST)')).toBeInTheDocument()
+    expect(screen.getByText('Thread #3912574')).toBeInTheDocument()
+    expect(screen.getByText('Replies: 84')).toBeInTheDocument()
 
     await user.click(screen.getByRole('link', { name: 'Watch GGG Live on February 26 (PST)' }))
 

@@ -152,6 +152,16 @@
   opacity: 0.88;
 }
 
+.post-author-link {
+  color: #f0f0f0;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.post-author-link:hover {
+  text-decoration: underline;
+}
+
 .post-card p {
   margin: 0;
   white-space: pre-wrap;

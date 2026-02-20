@@ -74,21 +74,21 @@ describe('forum router smoke test', () => {
           typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
         const pathname = new URL(url).pathname
 
-        if (pathname === '/api/categories') {
+        if (pathname === '/api/v3/categories') {
           return new Response(JSON.stringify(categoriesResponse), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
           })
         }
 
-        if (pathname === '/api/category/news') {
+        if (pathname === '/api/v3/category/news') {
           return new Response(JSON.stringify(categoryResponse), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
           })
         }
 
-        if (pathname === '/api/v2/thread/3912574') {
+        if (pathname === '/api/v3/thread/3912574') {
           return new Response(JSON.stringify(threadResponse), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
@@ -147,14 +147,14 @@ describe('forum router smoke test', () => {
           typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
         const pathname = new URL(url).pathname
 
-        if (pathname === '/api/categories') {
+        if (pathname === '/api/v3/categories') {
           return new Response(JSON.stringify(categoriesResponse), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
           })
         }
 
-        if (pathname === '/api/category/news') {
+        if (pathname === '/api/v3/category/news') {
           return new Response(JSON.stringify({ error: 'Category fetch failed' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },

@@ -1,7 +1,9 @@
+import { QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider } from '@tanstack/react-router'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { createAppQueryClient } from './app/queryClient'
 import { router } from './app/router'
 
 const categoriesResponse = {
@@ -44,6 +46,16 @@ const threadResponse = {
 }
 
 describe('forum router smoke test', () => {
+  const renderApp = () => {
+    const queryClient = createAppQueryClient()
+
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    )
+  }
+
   beforeEach(async () => {
     window.history.replaceState({}, '', '/')
     await router.navigate({ to: '/' })
@@ -84,7 +96,7 @@ describe('forum router smoke test', () => {
   it('renders categories, navigates to thread list, then renders posts', async () => {
     const user = userEvent.setup()
 
-    render(<RouterProvider router={router} />)
+    renderApp()
 
     expect(await screen.findByText('Announcements')).toBeInTheDocument()
 
@@ -108,7 +120,7 @@ describe('forum router smoke test', () => {
       vi.fn(async () => new Response('Internal Server Error', { status: 500 }))
     )
 
-    render(<RouterProvider router={router} />)
+    renderApp()
 
     expect(await screen.findByText('Error: Internal Server Error')).toBeInTheDocument()
   })
@@ -137,7 +149,7 @@ describe('forum router smoke test', () => {
     )
 
     const user = userEvent.setup()
-    render(<RouterProvider router={router} />)
+    renderApp()
 
     await user.click(await screen.findByRole('link', { name: 'Announcements' }))
 

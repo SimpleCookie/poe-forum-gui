@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { getForumCategory } from '../../api/forumApi'
-import type { CategoryResponse } from '../../types/forum'
 import CategoryContent from './components/CategoryContent'
 
 export default function CategoryPage() {
@@ -11,26 +10,10 @@ export default function CategoryPage() {
   const categoryName = search.name
   const navigate = useNavigate({ from: '/category/$slug' })
 
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [categoryData, setCategoryData] = useState<CategoryResponse | null>(null)
-
-  useEffect(() => {
-    const loadCategory = async () => {
-      try {
-        setIsLoading(true)
-        setError(null)
-        const response = await getForumCategory(slug, currentPage)
-        setCategoryData(response.data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load category')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    void loadCategory()
-  }, [slug, currentPage])
+  const categoryQuery = useQuery({
+    queryKey: ['forum', 'category', slug, currentPage],
+    queryFn: () => getForumCategory(slug, currentPage),
+  })
 
   const goToPage = (nextPage: number) => {
     void navigate({
@@ -48,9 +31,15 @@ export default function CategoryPage() {
       <article className="forum-group">
         <h2>{categoryName || `Category: ${slug}`}</h2>
         <CategoryContent
-          isLoading={isLoading}
-          error={error}
-          threads={categoryData?.threads ?? []}
+          isLoading={categoryQuery.isPending}
+          error={
+            categoryQuery.isError
+              ? categoryQuery.error instanceof Error
+                ? categoryQuery.error.message
+                : 'Failed to load category'
+              : null
+          }
+          threads={categoryQuery.data?.data.threads ?? []}
           currentPage={currentPage}
           categorySlug={slug}
           onPreviousPage={() => goToPage(currentPage - 1)}

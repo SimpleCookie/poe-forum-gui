@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { getForumThread } from '../../api/forumApi'
-import type { ThreadResponse } from '../../types/forum'
 import ThreadContent from './components/ThreadContent'
 
 export default function ThreadPage() {
@@ -11,26 +10,10 @@ export default function ThreadPage() {
   const currentPage = search.page
   const navigate = useNavigate({ from: '/thread/$threadId' })
 
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [threadData, setThreadData] = useState<ThreadResponse | null>(null)
-
-  useEffect(() => {
-    const loadThread = async () => {
-      try {
-        setIsLoading(true)
-        setError(null)
-        const response = await getForumThread(threadId, currentPage)
-        setThreadData(response.data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load thread')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    void loadThread()
-  }, [threadId, currentPage])
+  const threadQuery = useQuery({
+    queryKey: ['forum', 'thread', threadId, currentPage],
+    queryFn: () => getForumThread(threadId, currentPage),
+  })
 
   const goToPage = (nextPage: number) => {
     void navigate({
@@ -62,9 +45,15 @@ export default function ThreadPage() {
       <article className="forum-group">
         <h2>Thread #{threadId}</h2>
         <ThreadContent
-          isLoading={isLoading}
-          error={error}
-          threadData={threadData}
+          isLoading={threadQuery.isPending}
+          error={
+            threadQuery.isError
+              ? threadQuery.error instanceof Error
+                ? threadQuery.error.message
+                : 'Failed to load thread'
+              : null
+          }
+          threadData={threadQuery.data?.data ?? null}
           currentPage={currentPage}
           onPreviousPage={() => goToPage(currentPage - 1)}
           onNextPage={() => goToPage(currentPage + 1)}

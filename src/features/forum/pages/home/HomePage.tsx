@@ -35,10 +35,5 @@ export default function HomePage() {
     return <p className="forum-message error">Error: {error}</p>
   }
 
-  return (
-    <HomeContent
-      responseStatus={responseStatus}
-      categories={categories}
-    />
-  )
+  return <HomeContent responseStatus={responseStatus} categories={categories} />
 }

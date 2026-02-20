@@ -15,7 +15,9 @@ export default function HomeContent({ responseStatus, categories }: HomeContentP
 
       {Object.entries(categories ?? {}).map(([group, items]) => (
         <article className="forum-group" key={group}>
-          <h2>{group === 'poe1' ? 'Path of Exile 1' : group === 'poe2' ? 'Path of Exile 2' : group}</h2>
+          <h2>
+            {group === 'poe1' ? 'Path of Exile 1' : group === 'poe2' ? 'Path of Exile 2' : group}
+          </h2>
 
           <ul className="forum-list">
             {items.map((item) => (

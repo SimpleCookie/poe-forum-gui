@@ -5,17 +5,15 @@ const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim()
 
 const resolveApiUrl = (generatedUrl: string) => {
   const parsedGeneratedUrl = new URL(generatedUrl)
-  const targetBaseUrl = configuredApiBaseUrl?.length
-    ? configuredApiBaseUrl
-    : window.location.origin
+  const targetBaseUrl = configuredApiBaseUrl?.length ? configuredApiBaseUrl : window.location.origin
 
   return new URL(
     `${parsedGeneratedUrl.pathname}${parsedGeneratedUrl.search}`,
-    targetBaseUrl,
+    targetBaseUrl
   ).toString()
 }
 
-const fetchJson = async <T,>(generatedUrl: string): Promise<{ data: T; status: number }> => {
+const fetchJson = async <T>(generatedUrl: string): Promise<{ data: T; status: number }> => {
   const res = await fetch(resolveApiUrl(generatedUrl), { method: 'GET' })
 
   if (!res.ok) {

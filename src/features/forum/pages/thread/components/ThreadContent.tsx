@@ -42,19 +42,11 @@ export default function ThreadContent({
       </ul>
 
       <div className="forum-pager">
-        <button
-          type="button"
-          onClick={onPreviousPage}
-          disabled={currentPage <= 1}
-        >
+        <button type="button" onClick={onPreviousPage} disabled={currentPage <= 1}>
           Previous
         </button>
         <span>Page {currentPage}</span>
-        <button
-          type="button"
-          onClick={onNextPage}
-          disabled={!threadData?.nextPageUrl}
-        >
+        <button type="button" onClick={onNextPage} disabled={!threadData?.nextPageUrl}>
           Next
         </button>
       </div>

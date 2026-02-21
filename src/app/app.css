@@ -168,6 +168,23 @@
   white-space: pre-wrap;
 }
 
+.post-body {
+  white-space: pre-wrap;
+}
+
+.post-body blockquote {
+  margin: 0.5rem 0 0.5rem 0;
+  padding: 0.45rem 0.65rem;
+  border-left: 3px solid #4a4a4a;
+  background: #1a1a1a;
+  border-radius: 4px;
+}
+
+.post-body blockquote blockquote {
+  margin-top: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+
 .post-toolbar {
   display: flex;
   flex-direction: column;

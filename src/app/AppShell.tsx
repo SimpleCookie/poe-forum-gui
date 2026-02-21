@@ -8,13 +8,13 @@ export const AppShell = () => {
         <h1>
           <Link to="/">Path of Exile Forums</Link>
         </h1>
-        <p className="forum-subtitle">Browse categories, threads and posts</p>
+        <p className="forum-subtitle">Community &mdash; Announcements &amp; Discussion</p>
       </header>
 
       <Outlet />
 
       <p className="forum-footer">
-        Data source: <strong>@devgroup.se/poe-forum-api</strong>
+        Unofficial reader &mdash; data via <strong>@devgroup.se/poe-forum-api</strong>
       </p>
     </main>
   )

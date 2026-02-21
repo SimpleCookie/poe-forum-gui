@@ -10,7 +10,7 @@ export const HomeContent = ({ responseStatus, categories }: HomeContentProps) =>
   return (
     <section className="forum-board">
       <div className="forum-status">
-        API status: <strong>{responseStatus}</strong>
+        Status: <strong>{responseStatus}</strong>
       </div>
 
       {Object.entries(categories).map(([group, items]) => (

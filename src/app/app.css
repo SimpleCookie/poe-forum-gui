@@ -32,6 +32,21 @@
   text-decoration: none;
 }
 
+.forum-unofficial-badge {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.55rem;
+  padding: 0.1rem 0.45rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.6rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7a6a4a;
+  border: 1px solid #4a3a1a;
+  border-radius: 2px;
+}
+
 .forum-subtitle {
   margin: 0.2rem 0 0;
   font-size: 0.82rem;
@@ -205,6 +220,9 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 /* ───────── Individual post ───────── */
@@ -212,12 +230,13 @@
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 0;
-  border-top: 2px solid #4a3a1a;
+  border: 1px solid #3a2c10;
+  border-top: 3px solid #5a4018;
   background: #13100b;
 }
 
-.post-card:first-child {
-  border-top: none;
+.post-card:target {
+  border-top-color: #c8975a;
 }
 
 .post-card-content {
@@ -282,12 +301,55 @@
 }
 
 .post-body blockquote {
-  margin: 0.6rem 0;
+  margin: 0.75rem 0;
   padding: 0.5rem 0.75rem;
-  border-left: 3px solid #5a4520;
-  background: #0f0c07;
+  border-left: 3px solid #7a5c28;
+  background: #100d06;
   color: #9a8a6a;
   font-size: 0.87rem;
+  border-radius: 0 2px 2px 0;
+}
+
+.post-body blockquote cite.quote-author {
+  display: block;
+  font-style: normal;
+  font-size: 0.77rem;
+  font-weight: bold;
+  color: #d4a55e;
+  background: #191309;
+  border-bottom: 1px solid #2b2010;
+  padding: 0.28rem 0.75rem;
+  /* bleed the cite header to blockquote edges */
+  margin: -0.5rem -0.75rem 0.5rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-body blockquote cite.quote-author a {
+  color: #d4a55e;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.post-body blockquote cite.quote-author a:hover {
+  color: #f0c96a;
+  text-decoration: underline;
+}
+
+.post-body blockquote cite.quote-author::after {
+  content: ' wrote:';
+  font-weight: normal;
+  font-size: 0.73rem;
+  color: #7a6a4a;
+}
+
+.post-body blockquote cite.quote-author--anon::after {
+  content: 'Quote';
+  font-weight: normal;
+  font-size: 0.73rem;
+  color: #7a6a4a;
 }
 
 .post-body blockquote blockquote {

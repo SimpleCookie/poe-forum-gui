@@ -7,6 +7,7 @@ export const AppShell = () => {
       <header className="forum-header">
         <h1>
           <Link to="/">Path of Exile Forums</Link>
+          <span className="forum-unofficial-badge">Unofficial</span>
         </h1>
         <p className="forum-subtitle">Community &mdash; Announcements &amp; Discussion</p>
       </header>

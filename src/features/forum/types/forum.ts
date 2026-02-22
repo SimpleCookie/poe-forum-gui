@@ -1,4 +1,4 @@
-import type { Pageable, PostV4, ThreadResponseV4 } from '@devgroup.se/poe-forum-api'
+import type { Pageable, PostV5, ThreadResponseV5 } from '@devgroup.se/poe-forum-api'
 
 export type ForumCategory = {
   name: string
@@ -21,11 +21,11 @@ export type CategoryResponse = {
   threads: CategoryThread[]
 }
 
-export type ThreadPost = PostV4
+export type ThreadPost = PostV5
 
 export type ThreadPagination = Pageable
 
-export type ThreadResponse = ThreadResponseV4
+export type ThreadResponse = ThreadResponseV5
 
 export type ApiSuccess<T> = {
   kind: 'success'

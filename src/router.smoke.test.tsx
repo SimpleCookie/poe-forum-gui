@@ -36,7 +36,15 @@ const threadResponse = {
     {
       threadId: '3912574',
       indexOnPage: 1,
-      content: 'LOGIN',
+      content: {
+        type: 'doc',
+        blocks: [
+          {
+            type: 'paragraph',
+            text: 'LOGIN',
+          },
+        ],
+      },
       author: 'cennythaking#4769',
       createdAt: '2026-02-19T12:04:54.000Z',
       postId: 'p26573846',
@@ -73,21 +81,21 @@ describe('forum router smoke test', () => {
           typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
         const pathname = new URL(url).pathname
 
-        if (pathname === '/api/categories') {
+        if (pathname === '/api/v5/categories') {
           return new Response(JSON.stringify(categoriesResponse), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
           })
         }
 
-        if (pathname === '/api/category/news') {
+        if (pathname === '/api/v5/category/news') {
           return new Response(JSON.stringify(categoryResponse), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
           })
         }
 
-        if (pathname === '/api/v4/thread/3912574') {
+        if (pathname === '/api/v5/thread/3912574') {
           return new Response(JSON.stringify(threadResponse), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
@@ -146,14 +154,14 @@ describe('forum router smoke test', () => {
           typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
         const pathname = new URL(url).pathname
 
-        if (pathname === '/api/categories') {
+        if (pathname === '/api/v5/categories') {
           return new Response(JSON.stringify(categoriesResponse), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
           })
         }
 
-        if (pathname === '/api/category/news') {
+        if (pathname === '/api/v5/category/news') {
           return new Response(JSON.stringify({ error: 'Category fetch failed' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },

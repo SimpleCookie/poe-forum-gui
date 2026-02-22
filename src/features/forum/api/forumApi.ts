@@ -1,4 +1,4 @@
-import { setBaseUrl, v4 } from '@devgroup.se/poe-forum-api'
+import { setBaseUrl, v5 } from '@devgroup.se/poe-forum-api'
 import type {
   ApiResult,
   CategoryResponse,
@@ -50,10 +50,10 @@ const fetchJson = async <T>(request: () => Promise<{ status: number; data: unkno
   }
 }
 
-export const getForumCategories = () => fetchJson<ForumCategoryGroups>(() => v4.getCategories())
+export const getForumCategories = () => fetchJson<ForumCategoryGroups>(() => v5.getCategories())
 
 export const getForumCategory = (slug: string, page: number) =>
-  fetchJson<CategoryResponse>(() => v4.getCategory(slug, { page: String(page) }))
+  fetchJson<CategoryResponse>(() => v5.getCategory(slug, { page: String(page) }))
 
 export const getForumThread = (threadId: string, page: number) =>
-  fetchJson<ThreadResponse>(() => v4.getThread(threadId, String(page)))
+  fetchJson<ThreadResponse>(() => v5.getThread(threadId, String(page)))

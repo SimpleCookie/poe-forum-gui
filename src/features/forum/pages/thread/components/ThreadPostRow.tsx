@@ -9,6 +9,22 @@ type ThreadPostRowProps = {
   page: number
 }
 
+const renderTextWithLineBreaks = (text: string, keyPrefix: string): ReactNode[] => {
+  const normalized = text.replace(/\\n/g, '\n')
+  const lines = normalized.split('\n')
+
+  return lines.flatMap((line, lineIndex) => {
+    if (lineIndex === lines.length - 1) {
+      return [<span key={`${keyPrefix}-line-${lineIndex}`}>{line}</span>]
+    }
+
+    return [
+      <span key={`${keyPrefix}-line-${lineIndex}`}>{line}</span>,
+      <br key={`${keyPrefix}-br-${lineIndex}`} />,
+    ]
+  })
+}
+
 const buildNestedQuote = (content: ReactNode, depth: number, key: string): ReactNode => {
   let nestedQuote = content
 
@@ -29,7 +45,7 @@ const renderPostBlock = (post: ThreadPost, index: number): ReactNode => {
 
   switch (block.type) {
     case 'paragraph':
-      return <p key={key}>{block.text}</p>
+      return <p key={key}>{renderTextWithLineBreaks(block.text, key)}</p>
     case 'quote':
       return buildNestedQuote(
         <blockquote key={key} className="post-quote">
@@ -42,7 +58,7 @@ const renderPostBlock = (post: ThreadPost, index: number): ReactNode => {
           ) : (
             <cite className="quote-author quote-author--anon" />
           )}
-          {block.text}
+          {renderTextWithLineBreaks(block.text, `${key}-quote`)}
         </blockquote>,
         Math.max(1, block.depth),
         key

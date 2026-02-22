@@ -364,6 +364,38 @@
   display: block;
 }
 
+.post-embed-preview {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #4a3a1a;
+  background: #0f0c07;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.post-embed-preview:hover {
+  border-color: #6a5028;
+}
+
+.post-embed-preview img {
+  display: block;
+}
+
+.post-embed-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(15, 12, 7, 0.85);
+  color: #c8975a;
+  border: 1px solid #6a5028;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .post-body table {
   width: 100%;
   border-collapse: collapse;

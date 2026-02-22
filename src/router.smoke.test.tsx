@@ -59,6 +59,35 @@ const threadResponse = {
   },
 }
 
+const createThreadResponseForPage = (page: number) => ({
+  threadId: '3912574',
+  posts: [
+    {
+      threadId: '3912574',
+      indexOnPage: 1,
+      content: {
+        type: 'doc',
+        blocks: [
+          {
+            type: 'paragraph',
+            text: `Post page ${page}`,
+          },
+        ],
+      },
+      author: 'cennythaking#4769',
+      createdAt: '2026-02-19T12:04:54.000Z',
+      postId: `p2657384${page}`,
+    },
+  ],
+  pagination: {
+    page,
+    totalPages: 5,
+    hasNext: page < 5,
+    hasPrevious: page > 1,
+    pageSize: 20,
+  },
+})
+
 describe('forum router smoke test', () => {
   const renderApp = () => {
     const queryClient = createAppQueryClient()
@@ -178,5 +207,59 @@ describe('forum router smoke test', () => {
     await user.click(await screen.findByRole('link', { name: 'Announcements' }))
 
     expect(await screen.findByText('Error: Category fetch failed')).toBeInTheDocument()
+  })
+
+  it('updates page search param via first/previous/next/last controls', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input: RequestInfo | URL) => {
+        const urlString =
+          typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
+        const url = new URL(urlString)
+        const pathname = url.pathname
+
+        if (pathname === '/api/v5/thread/3912574') {
+          const requestedPage = Number(url.searchParams.get('page') ?? '1')
+
+          return new Response(JSON.stringify(createThreadResponseForPage(requestedPage)), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          })
+        }
+
+        return new Response('Not found', { status: 404 })
+      })
+    )
+
+    const user = userEvent.setup()
+    renderApp()
+
+    await router.navigate({
+      to: '/thread/$threadId',
+      params: { threadId: '3912574' },
+      search: { category: 'news', page: 3 },
+    })
+
+    expect(await screen.findByText('Page 3 of 5')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Next' }))
+    await waitFor(() => {
+      expect(router.state.location.search.page).toBe(4)
+    })
+
+    await user.click(screen.getByRole('button', { name: 'Previous' }))
+    await waitFor(() => {
+      expect(router.state.location.search.page).toBe(3)
+    })
+
+    await user.click(screen.getByRole('button', { name: 'First' }))
+    await waitFor(() => {
+      expect(router.state.location.search.page).toBe(1)
+    })
+
+    await user.click(screen.getByRole('button', { name: 'Last' }))
+    await waitFor(() => {
+      expect(router.state.location.search.page).toBe(5)
+    })
   })
 })

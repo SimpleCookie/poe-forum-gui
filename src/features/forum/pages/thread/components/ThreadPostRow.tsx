@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useState } from 'react'
 import type { ThreadPost } from '@/features/forum/types/forum'
 import { formatPostDate } from '@/features/forum/utils/formatPostDate'
 import { officialUrls } from '@/features/forum/utils/officialUrls'
@@ -8,6 +9,23 @@ type ThreadPostRowProps = {
   post: ThreadPost
   page: number
 }
+
+type QuoteRenderNode = {
+  key: string
+  author?: string
+  text: string
+  children: QuoteRenderNode[]
+}
+
+type PostRenderItem =
+  | {
+      kind: 'quote'
+      node: QuoteRenderNode
+    }
+  | {
+      kind: 'element'
+      element: ReactNode
+    }
 
 const renderTextWithLineBreaks = (text: string, keyPrefix: string): ReactNode[] => {
   const normalized = text
@@ -29,53 +47,82 @@ const renderTextWithLineBreaks = (text: string, keyPrefix: string): ReactNode[] 
   })
 }
 
-const buildNestedQuote = (content: ReactNode, depth: number, key: string): ReactNode => {
-  let nestedQuote = content
-
-  for (let level = 1; level < depth; level += 1) {
-    nestedQuote = (
-      <blockquote key={`${key}-depth-${level}`} className="post-quote">
-        {nestedQuote}
-      </blockquote>
-    )
+const resolveYoutubeVideoId = (videoId: string | undefined, embedUrl: string, url: string) => {
+  if (videoId && videoId.length > 0) {
+    return videoId
   }
 
-  return nestedQuote
+  const embedMatch = embedUrl.match(/\/embed\/([^?&/]+)/)
+  if (embedMatch?.[1]) {
+    return embedMatch[1]
+  }
+
+  const watchMatch = url.match(/[?&]v=([^?&/]+)/)
+  if (watchMatch?.[1]) {
+    return watchMatch[1]
+  }
+
+  return ''
 }
 
-const renderPostBlock = (post: ThreadPost, index: number): ReactNode => {
+const renderQuoteNode = (node: QuoteRenderNode): ReactNode => (
+  <blockquote key={node.key} className="post-quote">
+    {node.author ? (
+      <cite className="quote-author">
+        <a href={officialUrls.profile(node.author)} target="_blank" rel="noreferrer">
+          {node.author}
+        </a>
+      </cite>
+    ) : (
+      <cite className="quote-author quote-author--anon" />
+    )}
+    {renderTextWithLineBreaks(node.text, `${node.key}-quote`) }
+    {node.children.map((child) => renderQuoteNode(child))}
+  </blockquote>
+)
+
+const renderPostBlock = (
+  post: ThreadPost,
+  index: number,
+  loadedEmbedKeys: Set<string>,
+  loadEmbed: (embedKey: string) => void
+): ReactNode => {
   const block = post.content.blocks[index]
   const key = `${post.postId}-${index}`
 
   switch (block.type) {
     case 'paragraph':
       return <p key={key}>{renderTextWithLineBreaks(block.text, key)}</p>
-    case 'quote':
-      return buildNestedQuote(
-        <blockquote key={key} className="post-quote">
-          {block.author ? (
-            <cite className="quote-author">
-              <a href={officialUrls.profile(block.author)} target="_blank" rel="noreferrer">
-                {block.author}
-              </a>
-            </cite>
-          ) : (
-            <cite className="quote-author quote-author--anon" />
-          )}
-          {renderTextWithLineBreaks(block.text, `${key}-quote`)}
-        </blockquote>,
-        Math.max(1, block.depth),
-        key
-      )
     case 'image':
       return <img key={key} src={block.url} alt={block.alt ?? ''} loading="lazy" />
     case 'embed':
       if (block.provider === 'youtube') {
+        const embedKey = `${key}-youtube`
+        const isLoaded = loadedEmbedKeys.has(embedKey)
+        const youtubeVideoId = resolveYoutubeVideoId(block.videoId, block.embedUrl, block.url)
+
+        if (!isLoaded && youtubeVideoId) {
+          const thumbnailUrl = `https://i.ytimg.com/vi/${youtubeVideoId}/hqdefault.jpg`
+
+          return (
+            <button
+              key={key}
+              type="button"
+              className="post-embed-preview"
+              onClick={() => loadEmbed(embedKey)}
+              aria-label="Load YouTube video"
+            >
+              <img src={thumbnailUrl} alt="YouTube video thumbnail" loading="lazy" />
+              <span className="post-embed-play">Play</span>
+            </button>
+          )
+        }
+
         return (
           <iframe
             key={key}
             src={block.embedUrl}
-            title={block.videoId ?? `video-${post.postId}-${index}`}
+            title={youtubeVideoId || `video-${post.postId}-${index}`}
             loading="lazy"
             allowFullScreen
           />
@@ -92,7 +139,70 @@ const renderPostBlock = (post: ThreadPost, index: number): ReactNode => {
   }
 }
 
+const renderPostBlocks = (
+  post: ThreadPost,
+  loadedEmbedKeys: Set<string>,
+  loadEmbed: (embedKey: string) => void
+): ReactNode[] => {
+  const items: PostRenderItem[] = []
+  const quoteStack: QuoteRenderNode[] = []
+
+  post.content.blocks.forEach((block, index) => {
+    const key = `${post.postId}-${index}`
+
+    if (block.type !== 'quote') {
+      quoteStack.length = 0
+      items.push({
+        kind: 'element',
+        element: renderPostBlock(post, index, loadedEmbedKeys, loadEmbed),
+      })
+      return
+    }
+
+    const targetDepth = Math.max(1, Math.min(block.depth, quoteStack.length + 1))
+
+    while (quoteStack.length > targetDepth - 1) {
+      quoteStack.pop()
+    }
+
+    const node: QuoteRenderNode = {
+      key,
+      author: block.author,
+      text: block.text,
+      children: [],
+    }
+
+    const parentNode = quoteStack[quoteStack.length - 1]
+
+    if (parentNode) {
+      parentNode.children.push(node)
+    } else {
+      items.push({ kind: 'quote', node })
+    }
+
+    quoteStack.push(node)
+  })
+
+  return items.map((item) =>
+    item.kind === 'quote' ? renderQuoteNode(item.node) : item.element
+  )
+}
+
 export const ThreadPostRow = ({ post, page }: ThreadPostRowProps) => {
+  const [loadedEmbedKeys, setLoadedEmbedKeys] = useState<Set<string>>(new Set())
+
+  const loadEmbed = (embedKey: string) => {
+    setLoadedEmbedKeys((previousKeys) => {
+      if (previousKeys.has(embedKey)) {
+        return previousKeys
+      }
+
+      const nextKeys = new Set(previousKeys)
+      nextKeys.add(embedKey)
+      return nextKeys
+    })
+  }
+
   return (
     <li key={post.postId} className="post-card" id={`post-${post.postId.replace(/^p/, '')}`}>
       <div className="post-card-content">
@@ -107,7 +217,7 @@ export const ThreadPostRow = ({ post, page }: ThreadPostRowProps) => {
           </a>
           <span>{formatPostDate(post.createdAt)}</span>
         </div>
-        <div className="post-body">{post.content.blocks.map((_block, index) => renderPostBlock(post, index))}</div>
+        <div className="post-body">{renderPostBlocks(post, loadedEmbedKeys, loadEmbed)}</div>
       </div>
 
       <PostToolbar threadId={post.threadId} page={page} postId={post.postId} author={post.author} />

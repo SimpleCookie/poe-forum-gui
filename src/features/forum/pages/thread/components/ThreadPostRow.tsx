@@ -10,7 +10,11 @@ type ThreadPostRowProps = {
 }
 
 const renderTextWithLineBreaks = (text: string, keyPrefix: string): ReactNode[] => {
-  const normalized = text.replace(/\\n/g, '\n')
+  const normalized = text
+    .replace(/\\n/g, '\n')
+    .replace(/\r\n?/g, '\n')
+    .replace(/^\n+|\n+$/g, '')
+    .replace(/\n{2,}/g, '\n')
   const lines = normalized.split('\n')
 
   return lines.flatMap((line, lineIndex) => {

@@ -9,6 +9,20 @@ type ThreadPostRowProps = {
   page: number
 }
 
+const buildNestedQuote = (content: ReactNode, depth: number, key: string): ReactNode => {
+  let nestedQuote = content
+
+  for (let level = 1; level < depth; level += 1) {
+    nestedQuote = (
+      <blockquote key={`${key}-depth-${level}`} className="post-quote">
+        {nestedQuote}
+      </blockquote>
+    )
+  }
+
+  return nestedQuote
+}
+
 const renderPostBlock = (post: ThreadPost, index: number): ReactNode => {
   const block = post.content.blocks[index]
   const key = `${post.postId}-${index}`
@@ -17,11 +31,21 @@ const renderPostBlock = (post: ThreadPost, index: number): ReactNode => {
     case 'paragraph':
       return <p key={key}>{block.text}</p>
     case 'quote':
-      return (
+      return buildNestedQuote(
         <blockquote key={key} className="post-quote">
-          {block.author ? <cite>{block.author} wrote:</cite> : null}
+          {block.author ? (
+            <cite className="quote-author">
+              <a href={officialUrls.profile(block.author)} target="_blank" rel="noreferrer">
+                {block.author}
+              </a>
+            </cite>
+          ) : (
+            <cite className="quote-author quote-author--anon" />
+          )}
           {block.text}
-        </blockquote>
+        </blockquote>,
+        Math.max(1, block.depth),
+        key
       )
     case 'image':
       return <img key={key} src={block.url} alt={block.alt ?? ''} loading="lazy" />
